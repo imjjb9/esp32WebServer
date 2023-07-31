@@ -20,36 +20,55 @@ const int ledPins[NUM_LEDS] = {18, 19, 21, 22, 23, 5, 4, 2};
 void sendHtml() {
   // The 'R' before the parenthesis makes it a raw string literal, which allows multi-line strings.
   String response = R"(
-    <!DOCTYPE html><html>
+    <!DOCTYPE html>
+    <html>
       <head>
         <title>ESP32 Web Server Sequencer</title>
+        <!-- Meta tag for responsiveness -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Include Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+        <!-- Custom Styles -->
         <style>
-          html { font-family: sans-serif; text-align: center; }
-          body { display: inline-flex; flex-direction: column; }
-          h1 { margin-bottom: 1.2em; } 
-          h2 { margin: 0; }
-          div { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; grid-auto-flow: column; grid-gap: 1em; }
-          .btn { background-color: #5B5; border: none; color: #fff; padding: 0.5em 1em;
-                 font-size: 2em; text-decoration: none }
-          .btn.OFF { background-color: #333; }
+          .btn-custom { 
+            background-color: #5B5; 
+            border: none; 
+            color: #fff; 
+            padding: 0.5em 1em;
+            font-size: 2em; 
+            text-decoration: none;
+            margin-bottom: 1em;
+          }
+          .btn-custom.OFF { background-color: #333; }
         </style>
       </head>
-            
-      <body>
-        <h1>ESP32 Web Server Sequencer</h1>
-
-        <div>
-          <h2>SEQUENCE 1</h2>
-          <a href="/toggle/1" class="btn LED1_TEXT">LED1_TEXT</a>
-          <h2>SEQUENCE 2</h2>
-          <a href="/toggle/2" class="btn LED2_TEXT">LED2_TEXT</a>
-          <h2>SEQUENCE 3</h2>
-          <a href="/toggle/3" class="btn LED3_TEXT">LED3_TEXT</a>
-          <h2>SEQUENCE 4</h2>
-          <a href="/toggle/4" class="btn LED4_TEXT">LED4_TEXT</a>
-          <h2>SEQUENCE 5</h2>
-          <a href="/toggle/5" class="btn LED5_TEXT">LED5_TEXT</a>
+      
+      <body class="container">
+        <h1 class="text-center mt-4">ESP32 Web Server Sequencer</h1>
+    
+        <div class="row">
+          <div class="col-12 col-md-6 my-3 text-center">
+            <h2>SEQUENCE 1</h2>
+            <a href="/toggle/1" class="btn btn-custom LED1_TEXT">ACTIVATE</a>
+          </div>
+          <div class="col-12 col-md-6 my-3 text-center">
+            <h2>SEQUENCE 2</h2>
+            <a href="/toggle/2" class="btn btn-custom LED2_TEXT">ACTIVATE</a>
+          </div>
+          <div class="col-12 col-md-6 my-3 text-center">
+            <h2>SEQUENCE 3</h2>
+            <a href="/toggle/3" class="btn btn-custom LED3_TEXT">ACTIVATE</a>
+          </div>
+          <div class="col-12 col-md-6 my-3 text-center">
+            <h2>SEQUENCE 4</h2>
+            <a href="/toggle/4" class="btn btn-custom LED4_TEXT">ACTIVATE</a>
+          </div>
+          <div class="col-12 col-md-6 my-3 text-center">
+            <h2>SEQUENCE 5</h2>
+            <a href="/toggle/5" class="btn btn-custom LED5_TEXT">ACTIVATE</a>
+          </div>
         </div>
       </body>
     </html>
