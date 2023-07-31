@@ -25,7 +25,7 @@ The repository contains two sketches:
 
 ## Team Members
 
-- Engr. John Julius Baldia
+- [Engr. John Julius Baldia](https://github.com/imjjb9)
 - Engr. Rynefel B. Elopre
 
 Feel free to reach out to us if you have any questions or need further assistance with the code.
