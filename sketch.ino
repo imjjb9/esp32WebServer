@@ -1,21 +1,24 @@
+// Include the necessary libraries for WiFi and web server.
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
 #include <uri/UriBraces.h>
 
+// Define WiFi network credentials.
 #define WIFI_SSID "Wokwi-GUEST"
 #define WIFI_PASSWORD ""
-// Defining the WiFi channel speeds up the connection:
 #define WIFI_CHANNEL 6
 
+// Start the web server on port 80.
 WebServer server(80);
 
+// Define the pin numbers for LEDs.
 #define NUM_LEDS 8
 const int ledPins[NUM_LEDS] = {18, 19, 21, 22, 23, 5, 4, 2};
 
-bool ledStates[NUM_LEDS] = {false, false, false, false, false, false, false, false};
-
+// Define the HTML content to be sent to the client. It includes buttons to control each LED.
 void sendHtml() {
+  // The 'R' before the parenthesis makes it a raw string literal, which allows multi-line strings.
   String response = R"(
     <!DOCTYPE html><html>
       <head>
@@ -51,21 +54,17 @@ void sendHtml() {
       </body>
     </html>
   )";
-  
-  for(int i = 0; i < NUM_LEDS; i++){
-    String replaceText = "LED" + String(i + 1) + "_TEXT";
-    response.replace(replaceText, ledStates[i] ? "ON" : "ACTIVATE");
-  }
   server.send(200, "text/html", response);
 }
 
 void setup(void) {
+  // Initialize serial communication and set the mode of each LED pin to OUTPUT.
   Serial.begin(115200);
   for(int i = 0; i < NUM_LEDS; i++){
     pinMode(ledPins[i], OUTPUT);
   }
   
-
+  // Connect to the WiFi network.
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD, WIFI_CHANNEL);
   Serial.print("Connecting to WiFi ");
   Serial.print(WIFI_SSID);
@@ -76,9 +75,11 @@ void setup(void) {
   }
   Serial.println(" Connected!");
 
+  // Define the server routes.
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
+  // Start the server.
   server.on("/", sendHtml);
 
   server.on(UriBraces("/toggle/{}"), []() {
@@ -96,6 +97,7 @@ void setup(void) {
         }
         break;
       case 2:
+        // Sequence 2: right to left
         for(int i = NUM_LEDS - 1; i >= 0; i--){
           digitalWrite(ledPins[i], HIGH);
           delay(100);
@@ -103,6 +105,7 @@ void setup(void) {
         }
         break;
       case 3:
+        // Sequence 3: Even to odd
         for(int i = 0; i < NUM_LEDS; i += 2){
           digitalWrite(ledPins[i], HIGH);
           delay(100);
@@ -115,6 +118,7 @@ void setup(void) {
         }
         break;
       case 4:
+        // Sequence 4: Pairs from left to right
         for(int i = 0; i < NUM_LEDS - 1; i += 2){
           digitalWrite(ledPins[i], HIGH);
           digitalWrite(ledPins[i + 1], HIGH);
@@ -124,6 +128,7 @@ void setup(void) {
         }
         break;
       case 5:
+        // Sequence 5: Pairs from right to left
         for(int i = NUM_LEDS - 1; i > 0; i -= 2){
           digitalWrite(ledPins[i], HIGH);
           digitalWrite(ledPins[i - 1], HIGH);
@@ -141,6 +146,8 @@ void setup(void) {
 }
 
 void loop(void) {
+  // Let the server handle incoming client requests.
   server.handleClient();
+  // Delay between loops to prevent watchdog timer resets.
   delay(2);
 }
